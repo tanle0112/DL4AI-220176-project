@@ -17,16 +17,16 @@ def load_raw_data():
     df = pd.read_csv(file_path)
     return df
 
-def create_dataset(data, time_step=60):
+def create_dataset(data, time_step=60, forecast_day=1):
     X, y = [], []
 
-    for i in range(time_step, len(data)):
-        X.append(data[i-time_step:i])     
-        y.append(data[i, 3])            
+    for i in range(time_step, len(data) - forecast_day + 1):
+        X.append(data[i-time_step:i])
+        y.append(data[i + forecast_day - 1, 3])
 
     return np.array(X), np.array(y)
 
-def load_and_preprocess(time_step=60):
+def load_and_preprocess(time_step=60, forecast_day=1):
     df = load_raw_data()
 
     features = ['Low', 'High', 'Open', 'Close', 'Adjusted Close', 'Volume']
@@ -35,7 +35,7 @@ def load_and_preprocess(time_step=60):
     scaler = MinMaxScaler()
     data_scaled = scaler.fit_transform(data)
 
-    X, y = create_dataset(data_scaled, time_step)
+    X, y = create_dataset(data_scaled, time_step, forecast_day)
 
     split = int(len(X) * 0.8)
 
@@ -47,8 +47,8 @@ def load_and_preprocess(time_step=60):
 
     return X_train, y_train, X_test, y_test, scaler
 if __name__ == "__main__":
-    X_train, y_train, X_test, y_test, scaler = load_and_preprocess()
 
+    X_train, y_train, X_test, y_test, scaler = load_and_preprocess(forecast_day=3)
     print("X_train shape:", X_train.shape)
     print("y_train shape:", y_train.shape)
     print("X_test shape :", X_test.shape)

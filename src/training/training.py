@@ -7,7 +7,7 @@ from src.preprocessing.dataloader import load_and_preprocess
 from src.models.model import build_model
 
 
-X_train, y_train, X_test, y_test, scaler = load_and_preprocess()
+X_train, y_train, X_test, y_test, scaler = load_and_preprocess(forecast_day=3)
 
 model = build_model()
 
@@ -20,4 +20,4 @@ history = model.fit(
     verbose=1
 )
 
-model.save("stock_model.h5")
+model.save("stock_model_day3.h5")
