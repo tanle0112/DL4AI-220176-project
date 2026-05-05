@@ -12,7 +12,7 @@ X_train, y_train, X_val, y_val, X_test, y_test, scaler = load_and_preprocess(
     time_step=60, n=N
 )
 
-model = build_model(time_step=60, n_features=5)
+model = build_model(time_step=90, n_features=5)
 
 callbacks = [
     EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
